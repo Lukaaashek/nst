@@ -1,0 +1,73 @@
+{block content}
+<div id="content">
+	<h1 n:block=title>Články</h1>
+	
+	{if $user->isLoggedIn()}
+		<a n:href="Sign:changePassword">Změnit heslo</a> | 
+		<a n:href="Sign:out">Odhlásit se</a>
+	{else}
+		<a n:href="Sign:in">Přihlásit</a> | 
+		<a n:href="Sign:up">Registrovat</a>
+	{/if}
+	
+	<hr />
+	
+	<div class="order">
+		Řazení:
+		<a n:href="default, 1, 'newest'" n:class="$sort == newest ? active">Od nejnovějšího</a> |
+		<a n:href="default, 1, 'oldest'" n:class="$sort == oldest ? active">Od nejstaršího</a> |
+		<a n:href="default, 1, 'title_a'" n:class="$sort == title_a ? active">Podle nadpisu vzestupně</a> |
+		<a n:href="default, 1, 'title_z'" n:class="$sort == title_z ? active">Podle nadpisu sestupně</a> |
+		<a n:href="default, 1, 'worst'" n:class="$sort == worst ? active">Od nejhoršího</a> |
+		<a n:href="default, 1, 'best'" n:class="$sort == best ? active">Od nejlepšího</a>
+	</div>
+	
+	<hr />
+	
+	{foreach $articles as $article}
+		<div class="article">
+			<h2 id="article-{$article->id}">{$article->title}</h2>
+			<p>{$article->perex}</p>
+			<p>Datum: {$article->create_date|date:'d.m.Y'}</p>
+			{dump $article->rating}
+			<p class="total">Hodnocení: <span>{if $article->rating !== null}{$article->rating}{else}Zatím nehodnoceno{/if}</span></p>
+			{if $user->isLoggedIn()}
+				<p class="rating">
+					{ifset $userRating[$article->id]}
+						Vaše hodnocení: {$userRating[$article->id] == 1 ? 'like' : 'dislike'}
+					{else}
+						Ohodnotit: 
+						<a href="#" name="rate" data-article-id="{$article->id}" data-rate="like">Like</a> | 
+						<a href="#" name="rate" data-article-id="{$article->id}" data-rate="dislike">Dislike</a>
+					{/ifset}
+				</p>
+			{/if}
+		</div>
+		
+		<hr />
+		
+	{/foreach}
+	
+	<div class="pagination">
+		{if $page > 1}
+			<a n:href="default, 1">První</a>
+			&nbsp;|&nbsp;
+			<a n:href="default, $page-1">Předchozí</a>
+			&nbsp;|&nbsp;
+		{/if}
+
+		Stránka {$page} z {$lastPage}
+
+		{if $page < $lastPage}
+			&nbsp;|&nbsp;
+			<a n:href="default, $page+1">Další</a>
+			&nbsp;|&nbsp;
+			<a n:href="default, $lastPage">Poslední</a>
+		{/if}
+	</div>
+</div>
+{/block}
+
+{block scripts}
+	{include parent}
+{/block}

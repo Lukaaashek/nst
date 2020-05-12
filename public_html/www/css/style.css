@@ -1,0 +1,82 @@
+body {
+	font-size: 15px;
+	line-height: 1.6;
+	color: #333;
+	background: white;
+}
+
+#content {
+	max-width: 100%;
+	width: 1140px;
+	padding: 15px;
+	margin: auto;
+}
+
+#account {
+	width: 490px;
+	width: fit-content;
+	max-width: 100%;
+	padding: 15px;
+	margin: auto;
+}
+
+h1 {
+	color: #3484D2;
+}
+
+#ajax-spinner {
+	margin: 15px 0 0 15px;
+	padding: 13px;
+	background: white url('../images/spinner.gif') no-repeat 50% 50%;
+	font-size: 0;
+	z-index: 123456;
+	display: none;
+}
+
+div.flash {
+	color: black;
+	background: #FFF9D7;
+	border: 1px solid #E2C822;
+	padding: 1em;
+	margin: 1em 0;
+}
+
+div.flash.success {
+	background: #d4edda;
+}
+
+div.flash.error {
+	background: #f8d7da;
+}
+
+a,
+a:visited {
+	color: #3484D2;
+}
+
+a[href^="#error:"] {
+	background: red;
+	color: white;
+}
+
+a.active {
+	color: green;
+}
+
+form th, form td {
+	vertical-align: top;
+	font-weight: normal;
+}
+
+form th {
+	text-align: right;
+}
+
+form .required label {
+	font-weight: bold;
+}
+
+form .error {
+	color: #D00;
+	font-weight: bold;
+}

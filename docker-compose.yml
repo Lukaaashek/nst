@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+    web:
+        image: nginx:alpine
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ./public_html:/public_html
+            - ./conf.d:/etc/nginx/conf.d
+            - ./certs:/etc/nginx/certs
+        depends_on:
+            - db
+        networks:
+            - nginxphp
+    php:
+#        image: php:7.1-fpm-alpine
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        volumes:
+            - ./public_html:/public_html
+        depends_on:
+            - db
+        expose:
+            - 9000
+        networks:
+            - nginxphp
+    db:
+        image: mysql:5.7
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: test_db
+            MYSQL_USER: devuser
+            MYSQL_PASSWORD: devpass
+        command: mysqld --sql_mode="STRICT_ALL_TABLES" --character-set-server=utf8mb4 --collation-server=utf8mb4_czech_ci --init-connect='SET NAMES utf8mb4;'
+        ports:
+            - 3306:3306
+        networks:
+            - nginxphp
+            
+networks:
+    nginxphp:
